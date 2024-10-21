@@ -44,6 +44,7 @@
             cursor: pointer;
             position: absolute;
             bottom: 50px; /* Начальное положение внизу таймера */
+            transition: all 0.2s ease; /* Убираем изменение размера при движении */
         }
 
         #cancelButton:hover {
@@ -61,6 +62,19 @@
             opacity: 0.2;
             z-index: -1;
         }
+
+        .blinking {
+            animation: blink 1s infinite; /* Мигающий эффект для скелета */
+        }
+
+        @keyframes blink {
+            0%, 50% {
+                opacity: 0.2;
+            }
+            25%, 75% {
+                opacity: 0.5;
+            }
+        }
     </style>
 </head>
 <body>
@@ -73,18 +87,19 @@
 
     <button id="cancelButton">Отмена</button>
 
-    <div id="skeleton"></div>
+    <div id="skeleton" class="blinking"></div>
 
     <script>
         // Таймер обратного отсчета
         let timeLeft = 30;
+        let countdownActive = true;
         const timerElement = document.getElementById('timer');
 
         const countdown = setInterval(() => {
             if (timeLeft <= 0) {
                 clearInterval(countdown);
                 timerElement.innerHTML = "Самоуничтожение!";
-            } else {
+            } else if (countdownActive) {
                 timeLeft--;
                 let minutes = Math.floor(timeLeft / 60);
                 let seconds = timeLeft % 60;
@@ -95,11 +110,17 @@
 
         // Кнопка "Отмена", которая убегает
         const cancelButton = document.getElementById('cancelButton');
+        let moveCount = 0;
         cancelButton.addEventListener('mouseover', () => {
-            const x = Math.random() * (window.innerWidth - cancelButton.offsetWidth);
-            const y = Math.random() * (window.innerHeight - cancelButton.offsetHeight);
-            cancelButton.style.left = `${x}px`;
-            cancelButton.style.top = `${y}px`;
+            if (moveCount < 7) {
+                const x = Math.random() * (window.innerWidth - cancelButton.offsetWidth);
+                const y = Math.random() * (window.innerHeight - cancelButton.offsetHeight);
+                cancelButton.style.left = `${x}px`;
+                cancelButton.style.top = `${y}px`;
+                moveCount++;
+            } else {
+                cancelButton.style.display = 'none'; // Убираем кнопку после 7 перемещений
+            }
         });
 
         // Вход в полноэкранный режим при загрузке страницы
@@ -119,6 +140,13 @@
         window.onload = () => {
             openFullscreen();
         };
+
+        // Остановка таймера по комбинации клавиш D + 1
+        window.addEventListener('keydown', (event) => {
+            if (event.key === '1' && event.shiftKey) { // Проверяем нажатие комбинации D + 1
+                countdownActive = false;
+            }
+        });
     </script>
 
 </body>
