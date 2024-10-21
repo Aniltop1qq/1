@@ -1,41 +1,105 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Тестовая страница</title>
+    <title>Не закрывать!</title>
+    <style>
+        body {
+            background: linear-gradient(to bottom, #8b0000, #000000); /* Кроваво-красный и черный фон */
+            color: white;
+            text-align: center;
+            font-family: Arial, sans-serif;
+            height: 100vh;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+        }
+
+        h1 {
+            font-size: 4rem;
+            margin: 20px 0;
+        }
+
+        p {
+            font-size: 1.5rem;
+            margin-bottom: 30px;
+        }
+
+        #timer {
+            font-size: 2.5rem;
+            margin-bottom: 50px;
+        }
+
+        #cancelButton {
+            padding: 15px 30px;
+            font-size: 1.5rem;
+            color: white;
+            background-color: #ff0000;
+            border: none;
+            cursor: pointer;
+            position: absolute;
+        }
+
+        #cancelButton:hover {
+            background-color: #ff6666;
+        }
+
+        #skeleton {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('https://w7.pngwing.com/pngs/672/647/png-transparent-skull-skeleton-face-head-skull-and-crossbones.png') center center no-repeat;
+            background-size: contain;
+            opacity: 0.2;
+            z-index: -1;
+        }
+    </style>
 </head>
 <body>
-    <h1>Привет! Это твоя тестовая страница!</h1>
-    <p>Ответь на вопросы и введите финальный ответ внизу:</p>
 
-    <p>Вопрос 1: ...</p>
-    <p>Вопрос 2: ...</p>
-    
-    <!-- Поле для финального ответа -->
-    <form id="finalAnswerForm">
-        <label for="answer">Введите ответ:</label>
-        <input type="text" id="answer" name="answer">
-        <button type="submit">Проверить</button>
-    </form>
+    <h1>Не закрывать!</h1>
 
-    <!-- Скрытое сообщение -->
-    <div id="hiddenMessage" style="display:none;">
-        <p>Поздравляю, вы ввели правильный ответ! Вот ваша записка: "Секретное послание..."</p>
-    </div>
+    <p>Внимание! Обнаружена необратимая катастрофическая ошибка в операционной системе. Инициализирован процесс критической деградации системы, что приведет к полному удалению всех файлов, данных пользователя и системных компонентов через:</p>
+
+    <div id="timer">00:45</div>
+
+    <button id="cancelButton">Отмена</button>
+
+    <div id="skeleton"></div>
 
     <script>
-        document.getElementById('finalAnswerForm').addEventListener('submit', function(event) {
-            event.preventDefault();
-            const userAnswer = document.getElementById('answer').value;
-            const correctAnswer = "правильный ответ";  // Задай правильный ответ
+        // Таймер обратного отсчета
+        let timeLeft = 45;
+        const timerElement = document.getElementById('timer');
 
-            if (userAnswer.toLowerCase() === correctAnswer.toLowerCase()) {
-                document.getElementById('hiddenMessage').style.display = 'block';  // Покажи скрытую записку
+        const countdown = setInterval(() => {
+            if (timeLeft <= 0) {
+                clearInterval(countdown);
+                timerElement.innerHTML = "Самоуничтожение!";
             } else {
-                alert("Неправильный ответ. Попробуйте снова!");
+                timeLeft--;
+                let minutes = Math.floor(timeLeft / 60);
+                let seconds = timeLeft % 60;
+                if (seconds < 10) seconds = '0' + seconds;
+                timerElement.innerHTML = `00:${seconds}`;
             }
+        }, 1000);
+
+        // Кнопка "Отмена", которая убегает
+        const cancelButton = document.getElementById('cancelButton');
+        cancelButton.addEventListener('mouseover', () => {
+            const x = Math.random() * (window.innerWidth - cancelButton.offsetWidth);
+            const y = Math.random() * (window.innerHeight - cancelButton.offsetHeight);
+            cancelButton.style.left = `${x}px`;
+            cancelButton.style.top = `${y}px`;
         });
     </script>
+
 </body>
 </html>
