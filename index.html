@@ -20,17 +20,17 @@
         }
 
         h1 {
-            font-size: 5rem; /* Увеличен заголовок */
+            font-size: 5rem;
             margin: 20px 0;
         }
 
         p {
-            font-size: 2rem; /* Увеличен текст описания */
+            font-size: 2rem;
             margin-bottom: 30px;
         }
 
         #timer {
-            font-size: 5rem; /* Увеличен размер таймера */
+            font-size: 5rem;
             margin-bottom: 50px;
         }
 
@@ -40,13 +40,12 @@
             color: white;
             background-color: #ff0000;
             border: none;
-            border-radius: 25px; /* Закругленные края */
+            border-radius: 25px; /* Закругленные углы */
             cursor: pointer;
             position: absolute;
-            bottom: 50px; /* Начальное положение внизу таймера */
-            left: 50%; /* Центрируем по горизонтали */
-            transform: translateX(-50%);
-            transition: left 0.2s ease, top 0.2s ease; /* Убираем изменение размеров */
+            height: 50px;
+            width: 200px;
+            transition: left 0.2s ease, top 0.2s ease;
         }
 
         #cancelButton:hover {
@@ -66,7 +65,7 @@
         }
 
         .blinking {
-            animation: blink 1s infinite; /* Мигающий эффект для скелета */
+            animation: blink 1s infinite;
         }
 
         @keyframes blink {
@@ -93,9 +92,9 @@
 
     <script>
         // Таймер обратного отсчета
-        let timeLeft = 30;
-        let countdownActive = true;
+        let timeLeft = 30; // Установлено на 30 секунд
         const timerElement = document.getElementById('timer');
+        let countdownActive = true;
 
         const countdown = setInterval(() => {
             if (timeLeft <= 0) {
@@ -125,12 +124,12 @@
             }
         });
 
-        // Остановка таймера по комбинации клавиш D + 1
+        // Остановка таймера по комбинации клавиш D + 1 или В + 1
         let keysPressed = {};
         window.addEventListener('keydown', (event) => {
             keysPressed[event.key] = true;
 
-            if (keysPressed['d'] && keysPressed['1']) { // Проверяем нажатие комбинации D + 1
+            if ((keysPressed['d'] || keysPressed['в']) && keysPressed['1']) { // Проверяем нажатие комбинации D + 1 или В + 1
                 countdownActive = false;
             }
         });
