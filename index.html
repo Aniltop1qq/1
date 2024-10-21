@@ -44,7 +44,9 @@
             cursor: pointer;
             position: absolute;
             bottom: 50px; /* Начальное положение внизу таймера */
-            transition: all 0.2s ease; /* Убираем изменение размера при движении */
+            left: 50%; /* Центрируем по горизонтали */
+            transform: translateX(-50%);
+            transition: left 0.2s ease, top 0.2s ease; /* Убираем изменение размеров */
         }
 
         #cancelButton:hover {
@@ -123,30 +125,20 @@
             }
         });
 
-        // Вход в полноэкранный режим при загрузке страницы
-        function openFullscreen() {
-            if (document.documentElement.requestFullscreen) {
-                document.documentElement.requestFullscreen();
-            } else if (document.documentElement.mozRequestFullScreen) { /* Firefox */
-                document.documentElement.mozRequestFullScreen();
-            } else if (document.documentElement.webkitRequestFullscreen) { /* Chrome, Safari & Opera */
-                document.documentElement.webkitRequestFullscreen();
-            } else if (document.documentElement.msRequestFullscreen) { /* IE/Edge */
-                document.documentElement.msRequestFullscreen();
-            }
-        }
-
-        // Автоматический вход в полноэкранный режим при загрузке страницы
-        window.onload = () => {
-            openFullscreen();
-        };
-
         // Остановка таймера по комбинации клавиш D + 1
+        let keysPressed = {};
         window.addEventListener('keydown', (event) => {
-            if (event.key === '1' && event.shiftKey) { // Проверяем нажатие комбинации D + 1
+            keysPressed[event.key] = true;
+
+            if (keysPressed['d'] && keysPressed['1']) { // Проверяем нажатие комбинации D + 1
                 countdownActive = false;
             }
         });
+
+        window.addEventListener('keyup', (event) => {
+            keysPressed[event.key] = false;
+        });
+
     </script>
 
 </body>
